@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Name of the produced makefile
+makefile_name=Makefile
+# Name of the compiler
+compiler='g++'
+# Compiler options
+compiler_options='-std=c++11 -O3 -g'
+# Include paths
+#include_paths= '.:/usr/local/include'
+# Name of the external librairies
+librairies='-lgmpxx -lgmpxx -lgmp'
+# Name of the output directory
+output_dir='./bin'
+
+rm -f $makefile_name
+
+mkdir -p $output_dir
+
+echo CC = $compiler >> $makefile_name
+
+echo CC_OPT = $compiler_options >> $makefile_name
+
+echo CC_INC = $include_paths >> $makefile_name
+
+echo LD_LIB = $librairies >>$makefile_name
+
+echo OUTPUT_DIR = $output_dir >>$makefile_name
+
+echo 'PROG = $(OUTPUT_DIR)/vdf' >>$makefile_name
+
+####################
+# Source file search
+####################
+
+# We search for all source files
+all_cpp=`find . -name '*.cpp'`
+
+# We extract source and object filenames
+filenames_cpp=""
+filenames_obj=""
+for T in $all_cpp
+do
+    filenames_cpp+=" "
+    filenames_cpp+=`basename $T`
+    filenames_obj+=' $(OUTPUT_DIR)/'
+    tmp=`basename $T`
+    filenames_obj+=${tmp%.cpp}.o
+done
+
+echo OBJ=$filenames_obj >>$makefile_name
+echo >>$makefile_name
+
+##############################
+# Production of makefile rules
+##############################
+
+# We generate the main rule
+echo '$(PROG): $(OBJ)' >>$makefile_name
+echo '	$(CC) -o $@ $(OBJ) $(LD_LIB)' >>$makefile_name
+echo '	ln -f -s $(PROG) .' >>$makefile_name
+echo >>$makefile_name
+
+# We generate the clean rule
+echo 'clean:' >>$makefile_name
+echo '	rm $(OBJ)' >>$makefile_name
+echo '	rm $(PROG)' >>$makefile_name
+echo  >>$makefile_name
+
+# We generate compilation rules for object files
+for T in $all_cpp
+do
+    echo "making rule for " $T
+    echo -n '$(OUTPUT_DIR)/' >>$makefile_name
+    $compiler -MM $compiler_options $include_paths $T >> $makefile_name
+    echo '	$(CC) -c $(CC_OPT) $(CC_INC) -o $@ $<' >>$makefile_name
+    echo >>$makefile_name
+done
+
+exit
