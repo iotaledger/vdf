@@ -24,9 +24,10 @@ As an example, you can run **src/vdf 40 2048 128 3** to run the Wesolowski VDF u
 
 A python file has been written, located in **scripts/run.py** which allows to easily run a batch of simulations.
 
-
 ## OUTPUT OF THE SIMULATOR
 The simulator will not show information in the terminal but will write in in the **result/** folder. In this folder, there are files for each ran configuration, with a name format **tau_lambda_k_w.csv**
+
+Each line of the csv files contain the output of a simulation and five values separated with semicolons. The values are, in order, **setup_time**, i.e. time necessited to generate the modulus, **evaluation_time**, the time spent running the big exponentiation, **proving_time**, **naive_verification_time**, the time spent on verification using naive multi-exponentiation, i.e., computing two separate exponentiations and multiplying the result and **optimized-verification_time**, same as the last one but using Lenstra's algorithm.
 
 ## MULTIEXPONENTIATION ANALYSIS
 The **scripts/multi_exp_analysis.py** script provides a comparison between naive and optimized multiexponentiation used in the VDF verification part. After having run simulations using the **scripts/run.py** script, you can use it to display a figure describing the percentage of improvement of the Lenstra algorithm over the naive implementation using as different lines as you have set different w values.
