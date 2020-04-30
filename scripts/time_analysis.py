@@ -2,25 +2,14 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-naive = []
-opti = []
-
 t = 8
-kk = [6, 7, 8, 9, 10]
+kk = [5, 6, 7, 8]
 kk_values = [2**k for k in kk]
 kk_print = [2**(k + 1) for k in kk]
 lamda = 2048
 ww = [-1, 2, 3]
 zero = [0 for k in kk]
-
-
-labels = {
-    0: "Naive",
-    -1: "Parallel",
-    1: "W=1",
-    2: "W=2",
-    3: "W=3",
-}
+tau_values = range(10, 20)
 
 naive_time = []
 
@@ -34,7 +23,7 @@ for k in kk_values:
         line_array = line.split(";")
         temp_array.append(float(line_array[3]))
 
-    naive_time.append(np.mean(temp_array))
+    naive_time.append(np.median(temp_array))
 
 plt.plot(kk_print, naive_time, marker='o', label="Naive")
 
@@ -50,7 +39,7 @@ for w in ww:
             line_array = line.split(";")
             temp_array.append(float(line_array[3]))
 
-        verif_time.append(np.mean(temp_array))
+        verif_time.append(np.median(temp_array))
 
     plt.plot(kk_print, verif_time, marker='o', label=labels[w])
 
@@ -78,7 +67,7 @@ for w in ww:
             line_array = line.split(";")
             temp_array.append(float(line_array[3]))
 
-        verif_time.append(100 - 100 * np.mean(temp_array) / naive_time[i])
+        verif_time.append(100 - 100 * np.median(temp_array) / naive_time[i])
 
     plt.plot(kk_print, verif_time, marker='o', label=labels[w])
 
@@ -93,6 +82,6 @@ plt.title("Percetagne of time acceleration between naive multiexponentiation\n a
 plt.savefig(str(lamda) + "_C_percentage.pdf")
 plt.show()
 
-#print("Naive implementation mean computation time : ", nm)
-#print("Optimized implementation mean computation time : ", om)
+#print("Naive implementation median computation time : ", nm)
+#print("Optimized implementation median computation time : ", om)
 #print("Percentage gain : ", 100 - (om / nm * 100))

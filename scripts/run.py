@@ -2,10 +2,10 @@ import os
 
 t_values = range(8, 9)
 lambda_values = ['2048']
-kk_p = [1, 2, 3, 4, 5, 6, 7, 8]
+kk_p = [6, 7, 8, 9, 10, 11, 12]
 kk = [2**k for k in kk_p]
-ww = [2, 3, 4]
-repeat = 2
+ww = [-1, 0, 2, 3]
+repeat = 15
 
 
 for t in t_values:

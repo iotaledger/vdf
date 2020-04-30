@@ -14,6 +14,7 @@ void setup(int lambda, int k);
 void generate(mpz_t& dest);
 Proof evaluate(mpz_t l, mpz_t pi, const mpz_t x,
                long challenge);
+bool parallel_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi);
 bool naive_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi);
 bool optimized_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi, int w);
 std::chrono::duration<double> setup_time;

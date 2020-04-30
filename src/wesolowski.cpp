@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <thread>
 //#include "sha512.h"
 //#include "utils.h"
 #include "wesolowski.h"
@@ -63,13 +63,10 @@ Proof Wesolowski::evaluate(mpz_t l, mpz_t pi, const mpz_t x,
         // HERE WE START THE EVALUATION
         auto start_eval = std::chrono::high_resolution_clock::now();
 
-        mpz_t two;
-        mpz_init(two);
-        mpz_set_ui(two, 2);
-
         mpz_t exp_challenge;
         mpz_init(exp_challenge);
-        mpz_pow_ui(exp_challenge, two, challenge);
+        mpz_ui_pow_ui(exp_challenge, 2, challenge);
+
 
         mpz_init(y_saved);
         mpz_powm(y_saved, x, exp_challenge, N);
@@ -151,6 +148,65 @@ bool Wesolowski::naive_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
                 return 0;
         }
 }
+
+
+void exponentiation(mpz_t ret, mpz_t radix, mpz_t exp, mpz_t N)
+{
+        mpz_powm(ret, radix, exp, N);
+}
+
+
+bool Wesolowski::parallel_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
+
+        auto start_verif = std::chrono::high_resolution_clock::now();
+
+
+        mpz_t phi_l;
+        mpz_init(phi_l);
+        mpz_sub_ui(phi_l, l, 1);
+
+        mpz_t tau_mod;
+        mpz_init(tau_mod);
+        mpz_set_ui(tau_mod, challenge);
+        mpz_mod(tau_mod, tau_mod, phi_l);
+
+        mpz_t two;
+        mpz_init(two);
+        mpz_set_ui(two, 2);
+
+        mpz_t r;
+        mpz_init(r);
+        mpz_powm(r, two, tau_mod, l);
+
+        mpz_t y, y_tmp;
+        mpz_init(y);
+        mpz_init(y_tmp);
+
+        std::thread first(exponentiation, y, pi, l, N);
+        std::thread second(exponentiation, y_tmp, x, r, N);
+
+        first.join();
+        second.join();
+        //mpz_powm(y, pi, l, N);
+        //mpz_powm(y_tmp, x, r, N);
+        mpz_mul(y, y, y_tmp);
+        mpz_mod(y, y, N);
+
+        hash_prime(l, x);
+
+        if(mpz_cmp(y, y_saved) == 0) {
+                auto finish_verif = std::chrono::high_resolution_clock::now();
+
+                verif_time = finish_verif - start_verif;
+                //std::cout << verif_time.count() << std::endl;
+                return 1;
+        } else {
+                std::cout << "NOT WORKING" << std::endl;
+                exit(1);
+                return 0;
+        }
+}
+
 
 void print_precomp(std::vector<std::vector<mpz_class> > precomp, int pow_w)
 {
@@ -303,7 +359,7 @@ bool Wesolowski::optimized_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi, in
         if(mpz_cmp(R.get_mpz_t(), y_saved) == 0) {
                 auto finish_verif = std::chrono::high_resolution_clock::now();
 
-                verif_time_opti = finish_verif - start_verif;
+                verif_time = finish_verif - start_verif;
                 //std::cout << verif_time_opti.count() << std::endl;
                 return 1;
         } else {
