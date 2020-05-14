@@ -51,6 +51,10 @@ int main(int argc, char *argv[]) {
         {
                 result_verif = vdf.parallel_verify(x, pow(2, t), l, pi);
         }
+        else if(w == -2)
+        {
+                result_verif = vdf.parallel_diff_verify(x, pow(2, t), l, pi);
+        }
         else
         {
                 result_verif = vdf.optimized_verify(x, pow(2, t), l, pi, w);

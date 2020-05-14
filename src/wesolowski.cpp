@@ -72,7 +72,10 @@ Proof Wesolowski::evaluate(mpz_t l, mpz_t pi, const mpz_t x,
         mpz_powm(y_saved, x, exp_challenge, N);
 
         auto finish_eval = std::chrono::high_resolution_clock::now();
+
         eval_time = finish_eval - start_eval;
+
+        //std::cout << eval_time.count() << std::endl;
 
         // WE FINISHED THE EVALUATION
 
@@ -155,6 +158,35 @@ void exponentiation(mpz_t ret, mpz_t radix, mpz_t exp, mpz_t N)
         mpz_powm(ret, radix, exp, N);
 }
 
+void exponentiation_euclidian(mpz_t ret, mpz_t radix, mpz_t exp, mpz_t N, int k)
+{
+        mpz_t A, B;
+        mpz_init(A);
+        mpz_init(B);
+
+        mpz_t and_mod;
+        mpz_init(and_mod);
+
+        for(int i = 0; i < k; i++)
+        {
+                mpz_setbit(and_mod, i);
+        }
+
+        mpz_and(B, N, and_mod);
+        mpz_sub(A, N, B);
+        mpz_fdiv_q_2exp(A, A, k);
+
+        /*
+           std::cout << l << std::endl;
+           std::cout << "N = " << N << std::endl;
+           std::cout << "A = " << A << std::endl;
+           std::cout << "B = " << B << std::endl;
+           //mpz_powm(y, pi, l, N);
+           //mpz_powm(y_tmp, x, r, N);
+         */
+        mpz_powm(ret, radix, exp, N);
+}
+
 
 bool Wesolowski::parallel_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
 
@@ -189,6 +221,70 @@ bool Wesolowski::parallel_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
         second.join();
         //mpz_powm(y, pi, l, N);
         //mpz_powm(y_tmp, x, r, N);
+        mpz_mul(y, y, y_tmp);
+        mpz_mod(y, y, N);
+
+        hash_prime(l, x);
+
+        if(mpz_cmp(y, y_saved) == 0) {
+                auto finish_verif = std::chrono::high_resolution_clock::now();
+
+                verif_time = finish_verif - start_verif;
+                //std::cout << verif_time.count() << std::endl;
+                return 1;
+        } else {
+                std::cout << "NOT WORKING" << std::endl;
+                exit(1);
+                return 0;
+        }
+}
+
+
+
+bool Wesolowski::parallel_diff_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
+
+        auto start_verif = std::chrono::high_resolution_clock::now();
+
+
+        mpz_t phi_l;
+        mpz_init(phi_l);
+        mpz_sub_ui(phi_l, l, 1);
+
+        mpz_t tau_mod;
+        mpz_init(tau_mod);
+        mpz_set_ui(tau_mod, challenge);
+        mpz_mod(tau_mod, tau_mod, phi_l);
+
+        mpz_t two;
+        mpz_init(two);
+        mpz_set_ui(two, 2);
+
+        mpz_t r;
+        mpz_init(r);
+        mpz_powm(r, two, tau_mod, l);
+
+
+        mpz_t diff_exp;
+        mpz_init(diff_exp);
+        mpz_sub(diff_exp, l, r);
+
+        mpz_t y, y_tmp;
+        mpz_init(y);
+        mpz_init(y_tmp);
+
+        mpz_t w;
+        mpz_init(w);
+        mpz_mul(w, pi, x);
+
+
+
+        std::thread first(exponentiation_euclidian, y, w, r, N, k);
+        std::thread second(exponentiation_euclidian, y_tmp, pi, diff_exp, N, k);
+
+        first.join();
+        second.join();
+
+
         mpz_mul(y, y, y_tmp);
         mpz_mod(y, y, N);
 
