@@ -3,6 +3,7 @@
 
 #include <gmp.h>
 #include <vector>
+#include <chrono>
 
 #include "proof.h"
 

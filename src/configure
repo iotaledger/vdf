@@ -9,7 +9,7 @@ compiler_options='-std=c++11 -O3 -g'
 # Include paths
 #include_paths= '.:/usr/local/include'
 # Name of the external librairies
-librairies='-lgmpxx -lgmpxx -lgmp'
+librairies='-lgmpxx -pthread -lgmp'
 # Name of the output directory
 output_dir='./bin'
 
