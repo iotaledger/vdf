@@ -2,3 +2,4 @@
 *.o
 *.pyc
 cpp/result/
+src/bin
