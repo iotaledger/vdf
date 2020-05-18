@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 t_values = range(10, 15)
-lambda_values = ['1024', '2048', '4096']
+lambda_values = ['4096', '2048', '1024']
 lambda_markers = {'1024': 'o', '2048': 's', "4096": "d"}
-k = 256
+k = 128
 w = 0
 
 
@@ -26,7 +26,7 @@ for lamda in lambda_values:
         display_value.append(np.min(verif_time))
 
     plt.plot(t_values, display_value,
-             color=lambda_color[lamda], label="$k$=" + lamda, marker=lambda_markers[lamda])
+             color=lambda_color[lamda], label="$\lambda$=" + lamda, marker=lambda_markers[lamda])
 
 
 for lamda in lambda_values:

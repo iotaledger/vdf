@@ -4,8 +4,8 @@ t_values = range(10, 15)
 lambda_values = ['1024', '2048', '4096']
 kk = [256]
 ww = [0]
-repeat = 1
-repeat_large = 50
+repeat = 10
+repeat_large = 3
 
 for i in range(repeat_large):
     print("I=" + str(i))

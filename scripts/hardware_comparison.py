@@ -5,12 +5,18 @@ import numpy as np
 
 labels = ['IoT', 'CPU', 'FPGA', 'ASIC']
 pow_l = [2 * (10**5), 6 * (10**7), 3 * (10**10), 2 * (10**13)]
-vdf_l = [3 * (10**4), 10**6, 3 * (10**7), 0]
-vdf_l_h = [3 * (10**4), 0, 0, 10**9]
+
+
+vdf_l = [114392.68812605955, 3009883, 3 * (10**7), 0]
+vdf_l_h = [114392.68812605955, 0, 0, 10**9]
+
+
+curl_l = [175000, 4 * (10**6), 10**8, 0]
 
 pow_l = [x / pow_l[0] for x in pow_l]
 vdf_l = [x / vdf_l[0] for x in vdf_l]
 vdf_l_h = [x / vdf_l_h[0] for x in vdf_l_h]
+curl_l = [x / curl_l[0] for x in curl_l]
 
 
 x = np.arange(len(labels))  # the label locations
@@ -21,15 +27,19 @@ minor_ticks = np.arange(0, 1, 1)
 
 sided = 1
 if sided:
-    rects2 = ax.bar(x - width / 2, vdf_l_h, width,
+    rects2 = ax.bar(x - width / 2, vdf_l_h, width, label="VDF (speculative)",
                     color="lightgreen", zorder=3)
     rects2 = ax.bar(x - width / 2, vdf_l, width,
                     label='VDF', color="green", zorder=3)
+    # rects1 = ax.bar(x, curl_l, width,
+    #    label = 'Curl', color = "blue", zorder = 3)
     rects1 = ax.bar(x + width / 2, pow_l, width,
-                    label='PoW', color="red", zorder=3)
+                    label='SHA-256', color="red", zorder=3)
+
 else:
     rects1 = ax.bar(x, pow_l, width, label='PoW', color="red")
-    rects2 = ax.bar(x, vdf_l_h, width, label='VDF', color="green", hatch="//")
+    rects2 = ax.bar(x, vdf_l_h, width, label='VDF',
+                    color="green", hatch="//")
     rects3 = ax.bar(x, vdf_l, width, label='VDF', color="green")
 
 
@@ -43,13 +53,12 @@ plt.yscale("log")
 fig.tight_layout()
 
 plt.grid(b=True, which='major', color='k', linestyle='-', axis='y')
-plt.grid(b=True, which='minor', color='k', linestyle='-', axis='y')
+plt.grid(b=True, which='minor', color='lightgrey',
+         linestyle='-', axis='y')
 ax.minorticks_on()
 
-ax.yaxis.set_minor_locator(AutoMinorLocator(4))
 
-
-plt.savefig("stacked.pdf")
+plt.savefig("performance_factor.pdf")
 plt.show()
 
 
@@ -68,7 +77,6 @@ E_vdf = [x / E_vdf[0] for x in E_vdf]
 
 
 x = np.arange(len(labels))  # the label locations
-width = 0.35  # the width of the bars
 
 fig, ax = plt.subplots()
 minor_ticks = np.arange(0, 1, 1)
@@ -78,10 +86,11 @@ if sided:
     rects2 = ax.bar(x - width / 2, E_vdf, width,
                     label='VDF', color="green", zorder=3)
     rects1 = ax.bar(x + width / 2, E_pow, width,
-                    label='PoW', color="red", zorder=3)
+                    label='SHA-256', color="red", zorder=3)
 else:
     rects1 = ax.bar(x, pow_l, width, label='PoW', color="red")
-    rects2 = ax.bar(x, vdf_l_h, width, label='VDF', color="green", hatch="//")
+    rects2 = ax.bar(x, vdf_l_h, width, label='VDF',
+                    color="green", hatch="//")
     rects3 = ax.bar(x, vdf_l, width, label='VDF', color="green")
 
 
@@ -95,8 +104,9 @@ plt.yscale("log")
 fig.tight_layout()
 
 plt.grid(b=True, which='major', color='k', linestyle='-', axis='y')
-plt.grid(b=True, which='minor', color='k', linestyle='-', axis='y')
+plt.grid(b=True, which='minor', color='lightgrey',
+         linestyle='-', axis='y')
 plt.minorticks_on()
 
-plt.savefig("stacked.pdf")
+plt.savefig("energy_factor.pdf")
 plt.show()

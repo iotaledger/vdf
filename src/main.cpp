@@ -58,22 +58,18 @@ int main(int argc, char *argv[]) {
         {
                 result_verif = vdf.optimized_verify(x, pow(2, t), l, pi, w);
         }
-	std::cout << vdf.verif_time.count() <<  std::endl;
         std::ofstream file;
 
 
         file.open("result/" + std::to_string(t) + "_" +
                   std::to_string(lambda) + "_" + std::to_string(k)+ "_" + std::to_string(w) + ".csv",
                   std::ofstream::out | std::ofstream::app);
-	std::cout << "File opened" << std::endl;
 
         file << vdf.setup_time.count() << ";" << vdf.eval_time.count() << ";"
              << vdf.proof_time.count() << ";" << vdf.verif_time.count() << "\n";
-	
-	std::cout << "written" << std::endl;
+
+        std::cout << vdf.eval_time.count() << std::endl;
 
         file.close();
-
-	std::cout << "closed" << std::endl;
         return 0;
 }
