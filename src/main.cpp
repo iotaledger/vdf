@@ -28,19 +28,16 @@ int main(int argc, char *argv[]) {
 
         // Running the Setup phase of algorithm
         vdf.setup(lambda, k);
-        std::cerr << "setup OK" << std::endl;
         // Drawing a random input from the RSA group
         mpz_t x;
         mpz_init(x);
         vdf.generate(x);
-        std::cerr << "generate OK" << std::endl;
 
         //Here is the evaluation part. We combine the evaluation and proof however there are two chrono for the separate phases.
         mpz_t l, pi;
         mpz_init(l);
         mpz_init(pi);
         vdf.evaluate(l, pi, x, pow(2, t));
-        std::cerr << "eval OK" << std::endl;
 
         // Here we run the naive and optimized verifications
         bool result_verif;
@@ -61,7 +58,6 @@ int main(int argc, char *argv[]) {
                 result_verif = vdf.optimized_verify(x, pow(2, t), l, pi, w);
         }
         std::ofstream file;
-        std::cerr << "verif OK" << std::endl;
 
         file.open("result/" + std::to_string(t) + "_" +
                   std::to_string(lambda) + "_" + std::to_string(k)+ "_" + std::to_string(w) + ".csv",
