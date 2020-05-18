@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
 
         file << vdf.setup_time.count() << ";" << vdf.eval_time.count() << ";"
              << vdf.proof_time.count() << ";" << vdf.verif_time.count() << "\n";
-        std::cerr << "file OK" << std::endl;
         std::cout << vdf.eval_time.count() << std::endl;
 
         file.close();
