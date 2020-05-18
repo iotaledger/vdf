@@ -76,7 +76,6 @@ Proof Wesolowski::evaluate(mpz_t l, mpz_t pi, const mpz_t x,
 
         eval_time = finish_eval - start_eval;
 
-        std::cout << eval_time.count() << std::endl;
 
         // WE FINISHED THE EVALUATION
 
