@@ -61,7 +61,6 @@ Proof Wesolowski::evaluate(mpz_t l, mpz_t pi, const mpz_t x,
                            const long challenge) {
 
         // HERE WE START THE EVALUATION
-        std::cout << "test" << std::endl;
         auto start_eval = std::chrono::high_resolution_clock::now();
 
         mpz_t exp_challenge;
