@@ -37,7 +37,6 @@ void Wesolowski::setup(int _lambda, int _k) {
 
         k = _k;
 
-        mpz_init(rstate);
         gmp_randinit_mt(rstate);
 
         mpz_init(p);

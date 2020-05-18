@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "setup OK" << std::endl;
         // Drawing a random input from the RSA group
         mpz_t x;
+        mpz_init(x);
         vdf.generate(x);
         std::cerr << "generate OK" << std::endl;
 
