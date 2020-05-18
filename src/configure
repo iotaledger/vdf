@@ -5,7 +5,7 @@ makefile_name=Makefile
 # Name of the compiler
 compiler='g++'
 # Compiler options
-compiler_options='-std=c++11 -O3 -g'
+compiler_options='-std=c++11 -O3'
 # Include paths
 #include_paths= '.:/usr/local/include'
 # Name of the external librairies
