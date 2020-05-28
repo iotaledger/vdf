@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
         int k = std::atoi(argv[3]);
         int w = std::atoi(argv[4]);
 
-        t = 20;
-        lambda = 2048;
+        t = 15;
+        lambda = 4096;
         k = 128;
         w = 0;
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
         file << vdf.setup_time.count() << ";" << vdf.eval_time.count() << ";"
              << vdf.proof_time.count() << ";" << vdf.verif_time.count() << "\n";
-        std::cout << vdf.eval_time.count() << std::endl;
+        std::cout << vdf.verif_time.count() << std::endl;
 
         file.close();
         return 0;
