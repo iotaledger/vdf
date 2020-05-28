@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
         int k = std::atoi(argv[3]);
         int w = std::atoi(argv[4]);
 
-        t = 15;
-        lambda = 4096;
+        t = 6;
+        lambda = 8192;
         k = 128;
         w = 0;
 
