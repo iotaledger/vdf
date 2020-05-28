@@ -21,6 +21,11 @@ int main(int argc, char *argv[]) {
         int k = std::atoi(argv[3]);
         int w = std::atoi(argv[4]);
 
+        t = 20;
+        lambda = 2048;
+        k = 128;
+        w = 0;
+
         srand(time(NULL));
 
 

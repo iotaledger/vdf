@@ -7,8 +7,8 @@ labels = ['IoT', 'CPU', 'FPGA', 'ASIC']
 pow_l = [2 * (10**5), 6 * (10**7), 3 * (10**10), 2 * (10**13)]
 
 
-vdf_l = [114392.68812605955, 3009883, 3 * (10**7), 0]
-vdf_l_h = [114392.68812605955, 0, 0, 10**9]
+vdf_l = [61327.004993299845, 802724.0880919134, 3 * (10**7), 0]
+vdf_l_h = [61327.004993299845, 0, 0, 10**9]
 
 
 curl_l = [175000, 4 * (10**6), 10**8, 0]
@@ -20,20 +20,20 @@ curl_l = [x / curl_l[0] for x in curl_l]
 
 
 x = np.arange(len(labels))  # the label locations
-width = 0.35  # the width of the bars
+width = 0.25  # the width of the bars
 
 fig, ax = plt.subplots()
 minor_ticks = np.arange(0, 1, 1)
 
 sided = 1
 if sided:
-    rects2 = ax.bar(x - width / 2, vdf_l_h, width, label="VDF (speculative)",
+    rects2 = ax.bar(x - width, vdf_l_h, width, label="VDF (speculative)",
                     color="lightgreen", zorder=3)
-    rects2 = ax.bar(x - width / 2, vdf_l, width,
+    rects2 = ax.bar(x - width, vdf_l, width,
                     label='VDF', color="green", zorder=3)
-    # rects1 = ax.bar(x, curl_l, width,
-    #    label = 'Curl', color = "blue", zorder = 3)
-    rects1 = ax.bar(x + width / 2, pow_l, width,
+    rects1 = ax.bar(x, curl_l, width,
+                    label='Curl', color="blue", zorder=3)
+    rects1 = ax.bar(x + width, pow_l, width,
                     label='SHA-256', color="red", zorder=3)
 
 else:

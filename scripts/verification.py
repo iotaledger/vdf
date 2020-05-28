@@ -8,10 +8,10 @@ k = 128
 w = 0
 
 
-lambda_color = {'1024': 'red', '2048': 'blue', "4096": "green"}
+lambda_color = {'1024': 'green', '2048': 'blue', "4096": "red"}
 
-plt.plot([], [], color="black", ls="--", label="Raspberry Pi")
-plt.plot([], [], color="black", ls="-", label="i7-7820HQ")
+plt.plot([], [], color="black", ls="--", label="IoT")
+plt.plot([], [], color="black", ls="-", label="CPU")
 
 
 for lamda in lambda_values:
@@ -56,5 +56,5 @@ plt.ylabel("Verification time (ms)")
 plt.xticks([10, 11, 12, 13, 14], [
            '$2^{10}$', '$2^{11}$', '$2^{12}$', '$2^{13}$', '$2^{14}$'])
 
-plt.savefig("log.pdf")
+plt.savefig("log.pdf", bbox_inches='tight')
 plt.show()
