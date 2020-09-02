@@ -122,6 +122,10 @@ bool Wesolowski::naive_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
         mpz_init(r);
         mpz_powm(r, two, tau_mod, l);
 
+        std::chrono::duration<double> exp_time;
+
+        auto start_exp = std::chrono::high_resolution_clock::now();
+
         mpz_t y, y_tmp;
         mpz_init(y);
         mpz_init(y_tmp);
@@ -129,6 +133,8 @@ bool Wesolowski::naive_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
         mpz_powm(y_tmp, x, r, N);
         mpz_mul(y, y, y_tmp);
         mpz_mod(y, y, N);
+
+        auto finish_exp = std::chrono::high_resolution_clock::now();
 
         hash_prime(l, x);
         /*
@@ -142,6 +148,9 @@ bool Wesolowski::naive_verify(mpz_t x, long challenge, mpz_t l, mpz_t pi) {
                 auto finish_verif = std::chrono::high_resolution_clock::now();
 
                 verif_time = finish_verif - start_verif;
+
+                exp_time = finish_exp - start_exp;
+                std::cout << "EXP : " << exp_time.count() << std::endl;
                 //std::cout << verif_time.count() << std::endl;
                 return 1;
         } else {
